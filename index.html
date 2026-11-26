@@ -1,97 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#080b16">
-<title>Ambient Dashboard</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ambient</title>
 <style>
-:root { color-scheme: dark; }
-* { box-sizing: border-box; }
-html,body { margin:0; width:100%; height:100%; overflow:hidden; background:#070a13; color:#f3f5ff; font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
-body { display:flex; align-items:center; justify-content:center; }
-.bg { position:fixed; inset:0; background:
- radial-gradient(ellipse at 18% 15%,rgba(70,95,255,.22),transparent 48%),
- radial-gradient(ellipse at 85% 82%,rgba(0,220,255,.12),transparent 43%),
- linear-gradient(135deg,#080b16,#101426 55%,#070b14); }
-.bg:after { content:""; position:absolute; inset:-20%; background:radial-gradient(circle,rgba(130,110,255,.08),transparent 60%); animation: drift 18s ease-in-out infinite alternate; }
-@keyframes drift { from{transform:translate(-4%,3%) scale(.95)} to{transform:translate(5%,-4%) scale(1.08)} }
-.shell { position:relative; width:100vw;height:100vh; padding:5.5% 6.5%; display:grid; grid-template-columns:1.25fr .75fr; grid-template-rows:1fr auto; gap:5% 4%; }
-.top { display:flex; flex-direction:column; justify-content:center; min-width:0; }
-.kicker { color:#91a4ff; text-transform:uppercase; letter-spacing:.22em; font-size:clamp(8px,1.6vw,12px); font-weight:700; }
-.time { font-size:clamp(42px,13vw,96px); letter-spacing:-.065em; line-height:.98; font-weight:300; white-space:nowrap; text-shadow:0 0 35px rgba(127,148,255,.16); }
-.time .ampm { font-size:.34em; letter-spacing:.04em; color:#a9b4d8; margin-left:.15em; font-weight:500; }
-.date { margin-top:1.1em; color:#aeb7d2; font-size:clamp(10px,2vw,16px); letter-spacing:.04em; }
-.countbox { align-self:center; border:1px solid rgba(155,170,255,.18); background:linear-gradient(145deg,rgba(27,35,66,.7),rgba(12,17,33,.45)); border-radius:22px; padding:6% 7%; box-shadow:inset 0 1px rgba(255,255,255,.04),0 15px 40px rgba(0,0,0,.18); }
-.countlabel { color:#a0b0ff; font-size:clamp(8px,1.7vw,12px); letter-spacing:.2em; text-transform:uppercase; font-weight:700; }
-.count { margin:.28em 0 .1em; font-size:clamp(25px,7.4vw,57px); line-height:1; font-weight:300; letter-spacing:-.05em; white-space:nowrap; }
-.count span { font-size:.33em; color:#b2bbd9; letter-spacing:.08em; font-weight:600; }
-.target { color:#9aa6c9; font-size:clamp(9px,1.7vw,13px); letter-spacing:.08em; margin-top:.6em; }
-.bottom { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid rgba(155,170,255,.14); padding-top:4%; }
-.media { display:flex; align-items:center; gap:12px; min-width:0; }
-.art { width:clamp(30px,8vw,52px); height:clamp(30px,8vw,52px); border-radius:13px; background:linear-gradient(145deg,#7287ff,#32d4db); display:grid; place-items:center; box-shadow:0 0 22px rgba(80,140,255,.2); flex:none; }
-.art svg { width:50%; }
-.track { min-width:0; }
-.trackname { font-size:clamp(10px,2vw,15px); font-weight:600; color:#e6eaff; }
-.trackinfo { font-size:clamp(8px,1.6vw,12px); color:#8491b6; margin-top:4px; }
-.controls { display:flex; align-items:center; gap:clamp(7px,2vw,14px); flex:none; }
-button { border:0; color:#e7edff; background:rgba(255,255,255,.06); border:1px solid rgba(180,195,255,.13); border-radius:50%; width:clamp(27px,7vw,40px); height:clamp(27px,7vw,40px); display:grid; place-items:center; padding:0; }
-button svg { width:42%; height:42%; }
-button.play { width:clamp(34px,9vw,48px); height:clamp(34px,9vw,48px); background:linear-gradient(135deg,#7287ff,#39cbd9); color:#07101e; border:0; box-shadow:0 0 22px rgba(75,140,255,.25); }
-.status { color:#7382a8; font-size:clamp(8px,1.4vw,11px); letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
-@media (max-aspect-ratio: 1/1) { .shell{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:3%;padding:7%;} .countbox{align-self:stretch;} .bottom{grid-column:1; flex-wrap:wrap;} }
+:root{color-scheme:dark;--fg:#f5f5f7;--muted:#92929a;--glass:rgba(255,255,255,.075)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;color:var(--fg);background:radial-gradient(ellipse at 15% 10%,#343b55 0%,transparent 45%),radial-gradient(ellipse at 90% 85%,#312c47 0%,transparent 40%),linear-gradient(145deg,#08090d,#11121a 55%,#07080b);display:flex;align-items:center;justify-content:center}
+main{width:min(100vw,100vh * 1.75);height:100%;max-height:100vh;padding:5.5% 7%;display:flex;flex-direction:column;justify-content:space-between}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.clockwrap{text-align:center;margin:auto 0}.clock{font-size:clamp(64px,16vw,142px);font-weight:200;letter-spacing:-.075em;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 4px 40px rgba(255,255,255,.07)}
+.date{margin-top:16px;color:#c4c4cd;font-size:clamp(13px,3vw,18px);font-weight:400;letter-spacing:.015em}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.09);border-radius:23px;padding:18px 20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#aaaab4;margin-bottom:10px}
+.days{font-size:clamp(30px,8vw,50px);font-weight:300;letter-spacing:-.045em;line-height:1}.sub{color:var(--muted);font-size:12px;margin-top:8px}
+.media{display:flex;align-items:center;gap:15px}.disc{width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#5b647d,#272b38);display:grid;place-items:center;color:#d8dbe5;font-size:18px}
+.track{flex:1;min-width:0}.trackname{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{color:var(--muted);font-size:12px;margin-top:4px}
+.controls{display:flex;align-items:center;gap:16px;color:#e7e7ec;font-size:17px}.play{width:34px;height:34px;border-radius:50%;background:#f5f5f7;color:#17171a;display:grid;place-items:center;font-size:14px}
+.footer{text-align:center;color:#73737e;font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-top:14px}
+@media(max-width:420px){main{padding:6%}.cards{gap:9px}.card{padding:15px;border-radius:19px}.media{gap:10px}.controls{gap:11px}}
 </style>
 </head>
-<body>
-<div class="bg"></div>
-<main class="shell">
-  <section class="top">
-    <div class="kicker" id="day">THURSDAY</div>
-    <div class="time"><span id="clock">--:--</span><span class="ampm" id="ampm"></span></div>
-    <div class="date" id="date">Loading date…</div>
-  </section>
-  <section class="countbox">
-    <div class="countlabel">The next milestone</div>
-    <div class="count" id="count">-- <span>DAYS</span></div>
-    <div class="target">JEE MAIN · 20 JAN 2027</div>
-  </section>
-  <footer class="bottom">
-    <div class="media">
-      <div class="art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17V7l16-3v14"/><circle cx="7" cy="18" r="3"/><circle cx="19" cy="15" r="3"/></svg></div>
-      <div class="track">
-        <div class="trackname">Now Playing</div>
-        <div class="trackinfo">Media controls · Connect a media session</div>
-      </div>
-    </div>
-    <div class="controls">
-      <button aria-label="Previous" onclick="mediaAction('previous')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
-      <button class="play" aria-label="Play or pause" onclick="mediaAction('playpause')"><svg id="playicon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
-      <button aria-label="Next" onclick="mediaAction('next')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
-    </div>
-    <div class="status" id="status">AMBIENT MODE</div>
-  </footer>
+<body><main>
+<div class="top"><span>Ambient</span><span id="weekday"></span></div>
+<div class="clockwrap"><div class="clock" id="clock">00:00</div><div class="date" id="date"></div></div>
+<div class="cards">
+<div class="card"><div class="label">JEE Main · Countdown</div><div class="days" id="count">--</div><div class="sub">20 January 2027</div></div>
+<div class="card"><div class="label">Now playing</div><div class="media"><div class="disc">♫</div><div class="track"><div class="trackname">Music</div><div class="artist">Media controls</div></div><div class="controls"><span>‹‹</span><span class="play">▶</span><span>››</span></div></div></div>
+</div><div class="footer">Focus on what matters</div>
 </main>
 <script>
-const target = new Date(2027,0,20,0,0,0);
-function tick(){
- const now=new Date();
- let h=now.getHours(), ap=h>=12?'PM':'AM'; h=h%12||12;
- document.getElementById('clock').textContent=String(h).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
- document.getElementById('ampm').textContent=ap;
- document.getElementById('day').textContent=now.toLocaleDateString(undefined,{weekday:'long'}).toUpperCase();
- document.getElementById('date').textContent=now.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'});
- const diff=Math.max(0,target-now);
- const days=Math.floor(diff/86400000), hrs=Math.floor(diff%86400000/3600000), mins=Math.floor(diff%3600000/60000);
- document.getElementById('count').innerHTML=days+' <span>DAYS</span>';
- document.querySelector('.target').textContent='20 JAN 2027  ·  '+hrs+'H '+mins+'M REMAINING';
-}
-tick(); setInterval(tick,1000);
-function mediaAction(action){
- if(action==='playpause' && 'mediaSession' in navigator && navigator.mediaSession.playbackState){
-   // The browser can expose media-session metadata/control state, but this dashboard does not create a media stream.
- }
- document.getElementById('status').textContent='MEDIA '+action.toUpperCase();
-}
-</script>
-</body>
-</html>
+function update(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:true}).replace(' AM','').replace(' PM','');document.getElementById('date').textContent=n.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('weekday').textContent=n.toLocaleDateString(undefined,{weekday:'long'});const target=new Date(2027,0,20);target.setHours(0,0,0,0);const today=new Date(n);today.setHours(0,0,0,0);document.getElementById('count').textContent=Math.max(0,Math.ceil((target-today)/86400000))+' days';}
+update();setInterval(update,1000);
+</script></body></html>
