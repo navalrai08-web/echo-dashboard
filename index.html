@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#090d16">
+<title>Echo Ambient Dashboard</title>
+<style>
+*{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d16;color:#edf3ff;font-family:Inter,Roboto,"Segoe UI",sans-serif}
+body{display:flex;align-items:center;justify-content:center}
+.screen{width:100vw;height:100dvh;padding:4.5vh 5vw;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(ellipse at 15% 15%,#17233b 0%,transparent 45%),radial-gradient(ellipse at 85% 80%,#18233b 0%,transparent 40%),#090d16}
+.top{display:flex;justify-content:space-between;align-items:center;color:#9caecb;font-size:clamp(12px,2.6vw,18px);letter-spacing:.12em;text-transform:uppercase}
+.clock{text-align:center;margin-top:1vh}.time{font-size:clamp(72px,19vw,155px);font-weight:200;letter-spacing:-.06em;line-height:1}.date{font-size:clamp(16px,4vw,27px);color:#9eafc9;margin-top:1vh}
+.countdown{margin:2vh auto 0;text-align:center;border:1px solid #263652;background:#111a2a99;border-radius:24px;padding:2.4vh 4vw;width:min(94%,620px)}
+.label{font-size:clamp(12px,2.5vw,16px);letter-spacing:.2em;text-transform:uppercase;color:#88a6d1}
+.days{font-size:clamp(42px,10vw,75px);font-weight:300;line-height:1.1;margin:.4vh 0;color:#dbe8ff}.target{color:#a5b8d8;font-size:clamp(14px,3.5vw,22px)}
+.media{display:flex;align-items:center;gap:4vw;margin-top:2vh;padding:2vh 3vw;border-radius:22px;background:linear-gradient(135deg,#141e31,#101522);border:1px solid #25334c}
+.art{width:min(25vw,125px);aspect-ratio:1;border-radius:16px;flex-shrink:0;background:linear-gradient(135deg,#314c78,#161f3c 55%,#8060a7);display:grid;place-items:center;font-size:clamp(30px,8vw,55px)}
+.minfo{flex:1;min-width:0}.mtitle{font-size:clamp(17px,4.5vw,27px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{font-size:clamp(13px,3.3vw,19px);color:#95a8c7;margin-top:.4vh}
+.controls{display:flex;align-items:center;gap:clamp(12px,4vw,30px);margin-top:1.5vh}.btn{border:0;background:transparent;color:#e6edff;font-size:clamp(24px,6vw,40px);padding:0;min-width:40px;min-height:40px}.play{width:56px;height:56px;border-radius:50%;background:#dce8ff;color:#0b1322;font-size:25px;display:grid;place-items:center}
+.progress{height:4px;background:#33435e;border-radius:4px;margin-top:1.5vh;overflow:hidden}.fill{height:100%;width:0;background:#9dbdf2}
+.footer{text-align:center;font-size:clamp(11px,2.5vw,15px);color:#60728f;letter-spacing:.08em}
+</style>
+</head>
+<body><div class="screen">
+<div class="top"><span>Ambient display</span><span id="weekday"></span></div>
+<div class="clock"><div class="time" id="time">--:--</div><div class="date" id="date"></div></div>
+<div class="countdown"><div class="label">Countdown · JEE Main</div><div class="days" id="days">--</div><div class="target">20 JANUARY 2027</div></div>
+<div class="media">
+<div class="art">♫</div><div class="minfo"><div class="mtitle" id="track">Media controls</div><div class="artist" id="artist">Controls for media playing on this device</div>
+<div class="progress"><div class="fill" id="fill"></div></div>
+<div class="controls"><button class="btn" aria-label="Previous" id="prev">⏮</button><button class="btn play" aria-label="Play or pause" id="play">▶</button><button class="btn" aria-label="Next" id="next">⏭</button></div></div>
+</div>
+<div class="footer">FULLY KIOSK · TOUCH-FRIENDLY</div>
+</div>
+<script>
+function tick(){
+ const now=new Date();
+ document.getElementById('time').textContent=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+ document.getElementById('date').textContent=now.toLocaleDateString([], {day:'numeric',month:'long',year:'numeric'});
+ document.getElementById('weekday').textContent=now.toLocaleDateString([], {weekday:'long'});
+ const target=new Date(2027,0,20,0,0,0); const ms=target-now;
+ const days=Math.max(0,Math.ceil(ms/86400000));
+ document.getElementById('days').textContent=days+' DAYS';
+}
+tick();setInterval(tick,1000);
+if('mediaSession' in navigator){
+ navigator.mediaSession.setActionHandler('play',()=>{});
+ navigator.mediaSession.setActionHandler('pause',()=>{});
+ navigator.mediaSession.setActionHandler('previoustrack',()=>{});
+ navigator.mediaSession.setActionHandler('nexttrack',()=>{});
+}
+document.getElementById('play').onclick=()=>{alert('Browser page cannot control other apps directly. Android media-session controls may appear in Fully Kiosk if the active player exposes them.')};
+document.getElementById('prev').onclick=()=>{alert('Previous-track control depends on the active Android media session.')};
+document.getElementById('next').onclick=()=>{alert('Next-track control depends on the active Android media session.')};
+</script></body></html>
