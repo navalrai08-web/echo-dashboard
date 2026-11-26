@@ -1,36 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ambient</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ambient Study Dashboard</title>
 <style>
-:root{color-scheme:dark;--fg:#f5f5f7;--muted:#92929a;--glass:rgba(255,255,255,.075)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;color:var(--fg);background:radial-gradient(ellipse at 15% 10%,#343b55 0%,transparent 45%),radial-gradient(ellipse at 90% 85%,#312c47 0%,transparent 40%),linear-gradient(145deg,#08090d,#11121a 55%,#07080b);display:flex;align-items:center;justify-content:center}
-main{width:min(100vw,100vh * 1.75);height:100%;max-height:100vh;padding:5.5% 7%;display:flex;flex-direction:column;justify-content:space-between}
-.top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.clockwrap{text-align:center;margin:auto 0}.clock{font-size:clamp(64px,16vw,142px);font-weight:200;letter-spacing:-.075em;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 4px 40px rgba(255,255,255,.07)}
-.date{margin-top:16px;color:#c4c4cd;font-size:clamp(13px,3vw,18px);font-weight:400;letter-spacing:.015em}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:var(--glass);border:1px solid rgba(255,255,255,.09);border-radius:23px;padding:18px 20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 10px 40px rgba(0,0,0,.15)}
-.label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#aaaab4;margin-bottom:10px}
-.days{font-size:clamp(30px,8vw,50px);font-weight:300;letter-spacing:-.045em;line-height:1}.sub{color:var(--muted);font-size:12px;margin-top:8px}
-.media{display:flex;align-items:center;gap:15px}.disc{width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#5b647d,#272b38);display:grid;place-items:center;color:#d8dbe5;font-size:18px}
-.track{flex:1;min-width:0}.trackname{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{color:var(--muted);font-size:12px;margin-top:4px}
-.controls{display:flex;align-items:center;gap:16px;color:#e7e7ec;font-size:17px}.play{width:34px;height:34px;border-radius:50%;background:#f5f5f7;color:#17171a;display:grid;place-items:center;font-size:14px}
-.footer{text-align:center;color:#73737e;font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-top:14px}
-@media(max-width:420px){main{padding:6%}.cards{gap:9px}.card{padding:15px;border-radius:19px}.media{gap:10px}.controls{gap:11px}}
+:root{--glass:rgba(255,255,255,.10);--line:rgba(255,255,255,.14);--muted:rgba(255,255,255,.65)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090d;color:#f8f8fb;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+body{background-image:linear-gradient(90deg,rgba(7,8,13,.78),rgba(7,8,13,.34)),linear-gradient(0deg,rgba(7,8,13,.78),transparent 65%),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=85');background-position:center;background-size:cover}
+.shell{height:100%;width:100%;padding:3.2vh 4vw;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:auto 1fr auto;gap:2vh 2.4vw}
+.top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}.brand{font-size:clamp(14px,1.4vw,22px);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}.pill{border:1px solid var(--line);background:rgba(255,255,255,.08);padding:10px 16px;border-radius:99px;color:var(--muted);font-size:clamp(11px,1vw,15px);backdrop-filter:blur(20px)}
+.left{display:flex;flex-direction:column;justify-content:center;min-width:0}.time{font-size:clamp(64px,10vw,170px);font-weight:200;letter-spacing:-.075em;line-height:.95;white-space:nowrap}.date{font-size:clamp(18px,2.1vw,34px);font-weight:300;color:var(--muted);margin-top:2vh}.count{margin-top:4vh;display:flex;gap:2vw;align-items:baseline}.count .num{font-size:clamp(34px,5.5vw,92px);font-weight:250;letter-spacing:-.06em}.count .label{font-size:clamp(14px,1.5vw,23px);color:var(--muted)}
+.right{display:flex;flex-direction:column;justify-content:center;gap:2vh}.card{border:1px solid var(--line);background:rgba(17,19,28,.48);border-radius:30px;padding:clamp(18px,2.5vw,38px);backdrop-filter:blur(30px);box-shadow:0 18px 60px rgba(0,0,0,.12)}.kicker{font-size:clamp(11px,1vw,15px);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}.slot{font-size:clamp(48px,7vw,110px);font-weight:250;letter-spacing:-.06em;margin:1.2vh 0}.subject{font-size:clamp(24px,3vw,44px);font-weight:400}.sub{color:var(--muted);font-size:clamp(13px,1.4vw,20px);margin-top:1vh}.controls{display:flex;gap:12px;margin-top:2vh;flex-wrap:wrap}.btn{border:1px solid var(--line);background:rgba(255,255,255,.12);color:white;border-radius:99px;padding:12px 20px;font-size:clamp(12px,1.1vw,16px);cursor:pointer}.btn.primary{background:#f5f5f7;color:#111;border-color:transparent}.btn:hover{background:rgba(255,255,255,.22)}.btn.primary:hover{background:white}.bottom{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:clamp(11px,1vw,15px)}.edit{position:fixed;right:16px;bottom:16px;opacity:.25;font-size:12px;cursor:pointer}.edit:hover{opacity:1}
+@media(max-width:700px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr auto;padding:4vw;gap:1.5vh}.top,.bottom{grid-column:1}.right{gap:1vh}.time{font-size:17vw}.card{padding:18px;border-radius:22px}.count{margin-top:2vh}.bottom{gap:10px}}
 </style>
 </head>
-<body><main>
-<div class="top"><span>Ambient</span><span id="weekday"></span></div>
-<div class="clockwrap"><div class="clock" id="clock">00:00</div><div class="date" id="date"></div></div>
-<div class="cards">
-<div class="card"><div class="label">JEE Main · Countdown</div><div class="days" id="count">--</div><div class="sub">20 January 2027</div></div>
-<div class="card"><div class="label">Now playing</div><div class="media"><div class="disc">♫</div><div class="track"><div class="trackname">Music</div><div class="artist">Media controls</div></div><div class="controls"><span>‹‹</span><span class="play">▶</span><span>››</span></div></div></div>
-</div><div class="footer">Focus on what matters</div>
-</main>
+<body>
+<div class="shell">
+  <header class="top"><div class="brand">Ambient · Study</div><div class="pill" id="daypill">—</div></header>
+  <section class="left">
+    <div class="time" id="clock">--:--</div>
+    <div class="date" id="date">—</div>
+    <div class="count"><div class="num" id="countdown">—</div><div class="label">until JEE Main<br><span style="opacity:.6">20 January 2027</span></div></div>
+  </section>
+  <section class="right">
+    <div class="card">
+      <div class="kicker">Current study slot</div>
+      <div class="slot" id="slot">00:00:00</div>
+      <div class="sub" id="slotstatus">Ready when you are.</div>
+      <div class="controls"><button class="btn primary" id="toggle">Start slot</button><button class="btn" id="reset">Reset</button></div>
+    </div>
+    <div class="card">
+      <div class="kicker">YPT · display-only</div>
+      <div class="subject" id="subject">Study session</div>
+      <div class="sub">No YPT sign-in or data access from this dashboard. This panel is a visual placeholder.</div>
+    </div>
+  </section>
+  <footer class="bottom"><span>Minimal focus · Fullscreen ambient display</span><span>Keep going.</span></footer>
+</div>
 <script>
-function update(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:true}).replace(' AM','').replace(' PM','');document.getElementById('date').textContent=n.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('weekday').textContent=n.toLocaleDateString(undefined,{weekday:'long'});const target=new Date(2027,0,20);target.setHours(0,0,0,0);const today=new Date(n);today.setHours(0,0,0,0);document.getElementById('count').textContent=Math.max(0,Math.ceil((target-today)/86400000))+' days';}
-update();setInterval(update,1000);
-</script></body></html>
+const target=new Date(2027,0,20,0,0,0);
+function pad(n){return String(n).padStart(2,'0')}
+function tick(){
+ const now=new Date();
+ document.getElementById('clock').textContent=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:true});
+ document.getElementById('date').textContent=now.toLocaleDateString([], {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ document.getElementById('daypill').textContent=now.toLocaleDateString([], {weekday:'long'});
+ let diff=Math.max(0,target-now);let d=Math.floor(diff/86400000);let h=Math.floor(diff/3600000)%24;let m=Math.floor(diff/60000)%60;
+ document.getElementById('countdown').textContent=d+'d '+pad(h)+'h '+pad(m)+'m';
+}
+tick();setInterval(tick,1000);
+let elapsed=0,startedAt=null,interval=null;
+function fmt(s){s=Math.floor(s);return pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)}
+function renderSlot(){let total=elapsed+(startedAt?Math.floor((Date.now()-startedAt)/1000):0);document.getElementById('slot').textContent=fmt(total)}
+const toggle=document.getElementById('toggle');
+toggle.addEventListener('click',()=>{if(startedAt){elapsed+=Math.floor((Date.now()-startedAt)/1000);startedAt=null;toggle.textContent='Resume slot';document.getElementById('slotstatus').textContent='Slot paused.'}else{startedAt=Date.now();toggle.textContent='Pause slot';document.getElementById('slotstatus').textContent='Slot running · stay focused.'}renderSlot()});
+document.getElementById('reset').addEventListener('click',()=>{elapsed=0;startedAt=null;toggle.textContent='Start slot';document.getElementById('slotstatus').textContent='Ready when you are.';renderSlot()});
+setInterval(renderSlot,250);
+</script>
+</body>
+</html>
