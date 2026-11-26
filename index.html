@@ -2,55 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#090d16">
-<title>Echo Ambient Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080b16">
+<title>Ambient Dashboard</title>
 <style>
-*{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d16;color:#edf3ff;font-family:Inter,Roboto,"Segoe UI",sans-serif}
-body{display:flex;align-items:center;justify-content:center}
-.screen{width:100vw;height:100dvh;padding:4.5vh 5vw;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(ellipse at 15% 15%,#17233b 0%,transparent 45%),radial-gradient(ellipse at 85% 80%,#18233b 0%,transparent 40%),#090d16}
-.top{display:flex;justify-content:space-between;align-items:center;color:#9caecb;font-size:clamp(12px,2.6vw,18px);letter-spacing:.12em;text-transform:uppercase}
-.clock{text-align:center;margin-top:1vh}.time{font-size:clamp(72px,19vw,155px);font-weight:200;letter-spacing:-.06em;line-height:1}.date{font-size:clamp(16px,4vw,27px);color:#9eafc9;margin-top:1vh}
-.countdown{margin:2vh auto 0;text-align:center;border:1px solid #263652;background:#111a2a99;border-radius:24px;padding:2.4vh 4vw;width:min(94%,620px)}
-.label{font-size:clamp(12px,2.5vw,16px);letter-spacing:.2em;text-transform:uppercase;color:#88a6d1}
-.days{font-size:clamp(42px,10vw,75px);font-weight:300;line-height:1.1;margin:.4vh 0;color:#dbe8ff}.target{color:#a5b8d8;font-size:clamp(14px,3.5vw,22px)}
-.media{display:flex;align-items:center;gap:4vw;margin-top:2vh;padding:2vh 3vw;border-radius:22px;background:linear-gradient(135deg,#141e31,#101522);border:1px solid #25334c}
-.art{width:min(25vw,125px);aspect-ratio:1;border-radius:16px;flex-shrink:0;background:linear-gradient(135deg,#314c78,#161f3c 55%,#8060a7);display:grid;place-items:center;font-size:clamp(30px,8vw,55px)}
-.minfo{flex:1;min-width:0}.mtitle{font-size:clamp(17px,4.5vw,27px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{font-size:clamp(13px,3.3vw,19px);color:#95a8c7;margin-top:.4vh}
-.controls{display:flex;align-items:center;gap:clamp(12px,4vw,30px);margin-top:1.5vh}.btn{border:0;background:transparent;color:#e6edff;font-size:clamp(24px,6vw,40px);padding:0;min-width:40px;min-height:40px}.play{width:56px;height:56px;border-radius:50%;background:#dce8ff;color:#0b1322;font-size:25px;display:grid;place-items:center}
-.progress{height:4px;background:#33435e;border-radius:4px;margin-top:1.5vh;overflow:hidden}.fill{height:100%;width:0;background:#9dbdf2}
-.footer{text-align:center;font-size:clamp(11px,2.5vw,15px);color:#60728f;letter-spacing:.08em}
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html,body { margin:0; width:100%; height:100%; overflow:hidden; background:#070a13; color:#f3f5ff; font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
+body { display:flex; align-items:center; justify-content:center; }
+.bg { position:fixed; inset:0; background:
+ radial-gradient(ellipse at 18% 15%,rgba(70,95,255,.22),transparent 48%),
+ radial-gradient(ellipse at 85% 82%,rgba(0,220,255,.12),transparent 43%),
+ linear-gradient(135deg,#080b16,#101426 55%,#070b14); }
+.bg:after { content:""; position:absolute; inset:-20%; background:radial-gradient(circle,rgba(130,110,255,.08),transparent 60%); animation: drift 18s ease-in-out infinite alternate; }
+@keyframes drift { from{transform:translate(-4%,3%) scale(.95)} to{transform:translate(5%,-4%) scale(1.08)} }
+.shell { position:relative; width:100vw;height:100vh; padding:5.5% 6.5%; display:grid; grid-template-columns:1.25fr .75fr; grid-template-rows:1fr auto; gap:5% 4%; }
+.top { display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.kicker { color:#91a4ff; text-transform:uppercase; letter-spacing:.22em; font-size:clamp(8px,1.6vw,12px); font-weight:700; }
+.time { font-size:clamp(42px,13vw,96px); letter-spacing:-.065em; line-height:.98; font-weight:300; white-space:nowrap; text-shadow:0 0 35px rgba(127,148,255,.16); }
+.time .ampm { font-size:.34em; letter-spacing:.04em; color:#a9b4d8; margin-left:.15em; font-weight:500; }
+.date { margin-top:1.1em; color:#aeb7d2; font-size:clamp(10px,2vw,16px); letter-spacing:.04em; }
+.countbox { align-self:center; border:1px solid rgba(155,170,255,.18); background:linear-gradient(145deg,rgba(27,35,66,.7),rgba(12,17,33,.45)); border-radius:22px; padding:6% 7%; box-shadow:inset 0 1px rgba(255,255,255,.04),0 15px 40px rgba(0,0,0,.18); }
+.countlabel { color:#a0b0ff; font-size:clamp(8px,1.7vw,12px); letter-spacing:.2em; text-transform:uppercase; font-weight:700; }
+.count { margin:.28em 0 .1em; font-size:clamp(25px,7.4vw,57px); line-height:1; font-weight:300; letter-spacing:-.05em; white-space:nowrap; }
+.count span { font-size:.33em; color:#b2bbd9; letter-spacing:.08em; font-weight:600; }
+.target { color:#9aa6c9; font-size:clamp(9px,1.7vw,13px); letter-spacing:.08em; margin-top:.6em; }
+.bottom { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid rgba(155,170,255,.14); padding-top:4%; }
+.media { display:flex; align-items:center; gap:12px; min-width:0; }
+.art { width:clamp(30px,8vw,52px); height:clamp(30px,8vw,52px); border-radius:13px; background:linear-gradient(145deg,#7287ff,#32d4db); display:grid; place-items:center; box-shadow:0 0 22px rgba(80,140,255,.2); flex:none; }
+.art svg { width:50%; }
+.track { min-width:0; }
+.trackname { font-size:clamp(10px,2vw,15px); font-weight:600; color:#e6eaff; }
+.trackinfo { font-size:clamp(8px,1.6vw,12px); color:#8491b6; margin-top:4px; }
+.controls { display:flex; align-items:center; gap:clamp(7px,2vw,14px); flex:none; }
+button { border:0; color:#e7edff; background:rgba(255,255,255,.06); border:1px solid rgba(180,195,255,.13); border-radius:50%; width:clamp(27px,7vw,40px); height:clamp(27px,7vw,40px); display:grid; place-items:center; padding:0; }
+button svg { width:42%; height:42%; }
+button.play { width:clamp(34px,9vw,48px); height:clamp(34px,9vw,48px); background:linear-gradient(135deg,#7287ff,#39cbd9); color:#07101e; border:0; box-shadow:0 0 22px rgba(75,140,255,.25); }
+.status { color:#7382a8; font-size:clamp(8px,1.4vw,11px); letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
+@media (max-aspect-ratio: 1/1) { .shell{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:3%;padding:7%;} .countbox{align-self:stretch;} .bottom{grid-column:1; flex-wrap:wrap;} }
 </style>
 </head>
-<body><div class="screen">
-<div class="top"><span>Ambient display</span><span id="weekday"></span></div>
-<div class="clock"><div class="time" id="time">--:--</div><div class="date" id="date"></div></div>
-<div class="countdown"><div class="label">Countdown · JEE Main</div><div class="days" id="days">--</div><div class="target">20 JANUARY 2027</div></div>
-<div class="media">
-<div class="art">♫</div><div class="minfo"><div class="mtitle" id="track">Media controls</div><div class="artist" id="artist">Controls for media playing on this device</div>
-<div class="progress"><div class="fill" id="fill"></div></div>
-<div class="controls"><button class="btn" aria-label="Previous" id="prev">⏮</button><button class="btn play" aria-label="Play or pause" id="play">▶</button><button class="btn" aria-label="Next" id="next">⏭</button></div></div>
-</div>
-<div class="footer">FULLY KIOSK · TOUCH-FRIENDLY</div>
-</div>
+<body>
+<div class="bg"></div>
+<main class="shell">
+  <section class="top">
+    <div class="kicker" id="day">THURSDAY</div>
+    <div class="time"><span id="clock">--:--</span><span class="ampm" id="ampm"></span></div>
+    <div class="date" id="date">Loading date…</div>
+  </section>
+  <section class="countbox">
+    <div class="countlabel">The next milestone</div>
+    <div class="count" id="count">-- <span>DAYS</span></div>
+    <div class="target">JEE MAIN · 20 JAN 2027</div>
+  </section>
+  <footer class="bottom">
+    <div class="media">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17V7l16-3v14"/><circle cx="7" cy="18" r="3"/><circle cx="19" cy="15" r="3"/></svg></div>
+      <div class="track">
+        <div class="trackname">Now Playing</div>
+        <div class="trackinfo">Media controls · Connect a media session</div>
+      </div>
+    </div>
+    <div class="controls">
+      <button aria-label="Previous" onclick="mediaAction('previous')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button class="play" aria-label="Play or pause" onclick="mediaAction('playpause')"><svg id="playicon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+      <button aria-label="Next" onclick="mediaAction('next')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+    </div>
+    <div class="status" id="status">AMBIENT MODE</div>
+  </footer>
+</main>
 <script>
+const target = new Date(2027,0,20,0,0,0);
 function tick(){
  const now=new Date();
- document.getElementById('time').textContent=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
- document.getElementById('date').textContent=now.toLocaleDateString([], {day:'numeric',month:'long',year:'numeric'});
- document.getElementById('weekday').textContent=now.toLocaleDateString([], {weekday:'long'});
- const target=new Date(2027,0,20,0,0,0); const ms=target-now;
- const days=Math.max(0,Math.ceil(ms/86400000));
- document.getElementById('days').textContent=days+' DAYS';
+ let h=now.getHours(), ap=h>=12?'PM':'AM'; h=h%12||12;
+ document.getElementById('clock').textContent=String(h).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+ document.getElementById('ampm').textContent=ap;
+ document.getElementById('day').textContent=now.toLocaleDateString(undefined,{weekday:'long'}).toUpperCase();
+ document.getElementById('date').textContent=now.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'});
+ const diff=Math.max(0,target-now);
+ const days=Math.floor(diff/86400000), hrs=Math.floor(diff%86400000/3600000), mins=Math.floor(diff%3600000/60000);
+ document.getElementById('count').innerHTML=days+' <span>DAYS</span>';
+ document.querySelector('.target').textContent='20 JAN 2027  ·  '+hrs+'H '+mins+'M REMAINING';
 }
-tick();setInterval(tick,1000);
-if('mediaSession' in navigator){
- navigator.mediaSession.setActionHandler('play',()=>{});
- navigator.mediaSession.setActionHandler('pause',()=>{});
- navigator.mediaSession.setActionHandler('previoustrack',()=>{});
- navigator.mediaSession.setActionHandler('nexttrack',()=>{});
+tick(); setInterval(tick,1000);
+function mediaAction(action){
+ if(action==='playpause' && 'mediaSession' in navigator && navigator.mediaSession.playbackState){
+   // The browser can expose media-session metadata/control state, but this dashboard does not create a media stream.
+ }
+ document.getElementById('status').textContent='MEDIA '+action.toUpperCase();
 }
-document.getElementById('play').onclick=()=>{alert('Browser page cannot control other apps directly. Android media-session controls may appear in Fully Kiosk if the active player exposes them.')};
-document.getElementById('prev').onclick=()=>{alert('Previous-track control depends on the active Android media session.')};
-document.getElementById('next').onclick=()=>{alert('Next-track control depends on the active Android media session.')};
-</script></body></html>
+</script>
+</body>
+</html>
